@@ -1,0 +1,3 @@
+com\nhnacademy\client\event\observer\impl\MessageSendObserverTest.class
+com\nhnacademy\client\event\subject\MessageSubjectTest.class
+com\nhnacademy\client\event\observer\impl\MessageRecvObserverTest.class

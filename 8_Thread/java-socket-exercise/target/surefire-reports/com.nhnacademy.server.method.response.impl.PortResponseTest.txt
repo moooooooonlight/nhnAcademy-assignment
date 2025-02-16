@@ -1,0 +1,26 @@
+-------------------------------------------------------------------------------
+Test set: com.nhnacademy.server.method.response.impl.PortResponseTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 4.166 s <<< FAILURE! -- in com.nhnacademy.server.method.response.impl.PortResponseTest
+com.nhnacademy.server.method.response.impl.PortResponseTest.execute1 -- Time elapsed: 0.022 s <<< ERROR!
+java.lang.RuntimeException: java.io.IOException: Cannot run program "lsof": CreateProcess error=2, 지정된 파일을 찾을 수 없습니다
+	at com.nhnacademy.server.method.response.impl.PortResponse.execute(PortResponse.java:55)
+	at com.nhnacademy.server.method.response.impl.PortResponseTest.execute1(PortResponseTest.java:81)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+Caused by: java.io.IOException: Cannot run program "lsof": CreateProcess error=2, 지정된 파일을 찾을 수 없습니다
+	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1170)
+	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1089)
+	at java.base/java.lang.Runtime.exec(Runtime.java:681)
+	at java.base/java.lang.Runtime.exec(Runtime.java:491)
+	at java.base/java.lang.Runtime.exec(Runtime.java:366)
+	at com.nhnacademy.server.method.response.impl.PortResponse.execute(PortResponse.java:36)
+	... 4 more
+Caused by: java.io.IOException: CreateProcess error=2, 지정된 파일을 찾을 수 없습니다
+	at java.base/java.lang.ProcessImpl.create(Native Method)
+	at java.base/java.lang.ProcessImpl.<init>(ProcessImpl.java:500)
+	at java.base/java.lang.ProcessImpl.start(ProcessImpl.java:159)
+	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1126)
+	... 9 more
+
