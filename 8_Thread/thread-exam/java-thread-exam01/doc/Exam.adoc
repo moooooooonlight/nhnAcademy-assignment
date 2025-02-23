@@ -1,0 +1,115 @@
+= Java Thread Prgramming 시험
+
+== Quiz-01: 멀티스레드 카운터 구현하기
+
+스레드는 코드, 데이터, 힙을 공유하여 효율적인 자원 활용이 가능하지만, 경쟁 조건(Race Condition)이 발생할 수 있습니다. 이를 해결하기 위해 synchronized, Lock, AtomicInteger 등의 동기화 기법을 사용할 수 있습니다.
+
+이 문제에서는 멀티스레드 환경에서 안전하게 동작하는 카운터를 구현하고, 동기화 문제를 해결하는 방법을 학습합니다.
+
+=== 요구 사항
+
+==== MultiThreadCounter 클래스 구현
+
+1. 두 개의 필드를 가집니다.
+** localCount: 스레드별 개별 카운트 (각 스레드가 독립적으로 사용).
+** globalCount: 공유되는 전체 카운트 (모든 스레드가 증가).
+
+2. 객체는 반복 사용 가능합니다.
+** 생성자에서 최대 카운트(maxCount)를 설정합니다.
+** 스레드 실행 시, localCount는 초기화되지만 globalCount는 유지됩니다.
+
+3. 카운팅 방식
+** 스레드마다 localCount를 0부터 maxCount까지 증가합니다.
+** 각 스레드가 localCount를 증가할 때마다 globalCount도 함께 증가합니다.
+
+4. 누적 카운트 확인 기능 제공
+** getGlobalCount(): 누적된 globalCount 값을 반환해야 합니다.
+
+5. 멀티스레드 테스트
+** 하나의 MultiThreadCounter 객체를 생성하여 2개 이상의 스레드를 실행합니다.
+
+=== 구현 시 고려할 사항
+
+* 경쟁 조건 발생 가능성: globalCount가 여러 스레드에 의해 동시에 수정될 수 있어야 합니다.
+* 동기화 방법 적용: 언어에서 제공되는 기능을 사용합니다.
+* 올바른 카운트 값 유지: 모든 스레드가 독립적인 localCount를 사용하면서도 globalCount는 정확하게 증가해야 합니다.
+
+== Quiz-02: Multi-Thread Counter 다시 만들기
+
+자바에서는 동시성 제어를 위해 많은 기능을 지원합니다. 직접적으로 synchronized 기능을 사용하지 않고, 동기화 문제를 해결해 보도록 합니다.
+
+=== 요구 사항
+
+* Quiz-01과 기본 요구 사항은 동일합니다.
+* synchronized 키워드 사용 금지합니다.
+대신 link:https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/atomic/AtomicInteger.html[AtomicInteger]와
+link:https://docs.oracle.com/javase/8/docs/api/java/lang/ThreadLocal.html[ThreadLocal]을 사용하여 동기화 문제를 해결 하세요.
+* 주어진 테스트 코드를 확인하고, 테스트 코드가 정상 동작하도록 작성합니다.
+
+== Quiz-03: SimpleThreadLocal<T> 직접 구현하기
+
+Java의 ThreadLocal<T> 클래스는 각 스레드가 독립적인 값을 유지할 수 있도록 지원합니다.  Java의 ThreadLocal<T>를 사용하지 않고, 유사한 기능을 제공하는 SimpleThreadLocal<T> 클래스를 직접 구현합니다.
+
+=== 요구 사항
+
+1. SimpleThreadLocal<T> 클래스를 구현하세요.
+* 각 스레드별로 독립적인 값을 유지할 수 있어야 합니다.
+* ThreadLocal을 사용하지 않고 직접 구현합니다.
+* 메서드 호출 시 주어진 인수가 올바르지 않으면 IllegalArgumentException을 발생 시킵니다.
+2. 다음 메서드를 구현하세요. (추가적인 메서드 구현은 관여하지 않습니다.)
+* SimpleThreadLocal(Supplier<T> init): 기본값 설정을 위해 Supplier<T>를 사용하여 동적 초기화를 지원합니다.
+* set(T value): 현재 스레드에서 유지할 값을 설정합니다.
+* get(): 현재 스레드에서 유지된 값을 반환합니다. 없으면 Supplier<T>를 호출하여 초기화 합니다.
+* get(Thread thread): 특정 스레드에서 유지된 값을 반환합니다. 없으면 Supplier<T>를 호출하여 초기화 합니다.
+* remove(): 현재 스레드에서 값을 제거합니다.
+* remove(Thread thread): 특정 스레드에서 값을 제거합니다.
+
+
+== Quiz-04. List를 이용해 SharedQueue 구현하기.
+
+Java에서 여러 작업을 순차적으로 처리하거나 입력 요청을 실시간 처리가 어려운 경우, Queue를 이용해 순차적으로 처리합니다.
+멀티 스레드 구조에서 여러 스레드가 동일한 큐를 이용해 작업을 넘기거나 받을 수 있으며, 이때 동기화 문제가 발생할 수 있으므로 이를 해결하기 위한 큐를 구현해야 합니다.
+
+=== 요구 사항
+
+1. SharedQueue 클래스를 구현하세요.
+* 생성시 큐의 크기를 지정합니다.
+* 멀티스레드 환경에서 안전하게 동작하도록 동기화 처리 (synchronized, wait-notify, 또는 Lock-Condition 사용 가능)
+2. 다음 메서드를 구현하세요.
+* enqueue(int value): 큐의 마지막에 값을 삽입합니다.
+** 공간이 없으면, 기다립니다.
+* enqueue(int value, long timeout): 큐의 마지막에 값을 삽입합니다.
+** 공간이 없으면, timeout만큼 기다린 후 실패시 TimeoutException을 발생 시킵니다.
+* dequeue(): 큐의 첫번째 값을 반환합니다.
+** 값이 없으면, 기다립니다.
+* dequeue(long timeout): 큐의 첫번째 값을 반환합니다.
+** 값이 없으면, timeout만큼 기다린 후 실패시 TimeoutException을 발생 시킵니다.
+
+== Quiz-05.동시 입장 제한이 있는 생산자-소비자 문제
+
+=== 문제 설명
+
+* 마트에는 동시에 입장할 수 있는 손님이 최대 5명으로 제한됩니다.
+* 총 20명의 손님(소비자)이 순차적으로 마트를 방문하여 농산물을 구매합니다.
+* 마트에서는 여러 종류의 농산물을 판매하며, 품목별 최대 보유 수량을 설정할 수 있습니다.
+* 생산자는 해당 품목의 재고가 최대치에 도달하면 생산을 중단하고 대기해야 합니다.
+* 소비자는 구매하려는 품목이 없으면 구매하지 않고 돌아갑니다.
+
+=== 요구 사항
+
+1. Market 클래스 (공유 자원: 마트)
+** storeProduct(String product, int quantity): 생산자가 특정 품목을 일정 수량 추가합니다.
+** buyProduct(String product, int quantity): 소비자가 특정 품목을 일정 수량 구매합니다.
+** enterMarket(): 손님이 마트에 입장 (최대 5명까지 동시 입장 가능)합니다.
+** leaveMarket(): 손님이 마트에서 퇴장합니다.
+
+2. Producer 클래스 (생산자)
+** 랜덤한 품목을 생산하여 마트에 추가합니다.
+** 해당 품목의 재고가 최대치에 도달하면 최대 3초까지 대기 후 생산을 포기합니다.
+
+3. Consumer 클래스 (소비자)
+** 마트에 입장 후 랜덤한 품목을 구매하려고 시도합니다.
+** 해당 품목이 없으면 구매하지 않고 그냥 지나갑니다.
+** 동시에 최대 5명만 마트에 입장할 수 있습니다.
+
+4. JUnit을 사용하여 동기화 및 멀티스레드 환경에서 올바르게 동작하는지 검증합니다.
